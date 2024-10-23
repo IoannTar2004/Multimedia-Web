@@ -1,0 +1,35 @@
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Audio Visualizer</title>
+</head>
+<body>
+<audio id="audio">
+    <source src="audio/front-line-assembly-victim.mp3"/>
+</audio>
+<div id="dynamics">
+    <div class="dynamics-item" id="dynamics1">
+        <img class="subs-item" id="sub1" src="images/sub.png">
+    </div>
+    <div class="dynamics-item" id="dynamics2">
+        <img class="subs-item" id="sub2" src="images/sub.png">
+    </div>
+</div>
+<div id="media">
+<!--    <div class="analyzer-item" id="analyzer1">-->
+<!--        <img src="images/screen.jpeg" class="compressor">-->
+<!--    </div>-->
+<!--    <div class="analyzer-item" id="analyzer2">-->
+<!--        <img src="images/screen.jpeg" class="compressor">-->
+<!--    </div>-->
+    <canvas class="canvas" id="canvas1"></canvas>
+    <canvas class="canvas" id="canvas2"></canvas>
+</div>
+<div id="device">
+
+</div>
+<button id="button" style="position: absolute">Start</button>
+<script src="js/dynamic-audio.js"></script>
+</body>
+</html>
