@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+#Ivan {
+    color: white;
+    position: absolute;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
 canvas {
     width: 100%;
     height: 100%;
