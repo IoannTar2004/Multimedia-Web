@@ -1,0 +1,187 @@
+button:hover {
+    cursor: pointer;
+}
+
+#player {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 26%;
+    height: 80%;
+    background: linear-gradient(0deg, rgba(128,128,128,1) 0%, rgba(73,67,67,1) 100%);
+    border-radius: 20px;
+    z-index: 3;
+}
+
+#covers {
+    margin-top: 5%;
+    width: 100%;
+    height: 29%;
+    align-items:center;
+    justify-content: center;
+}
+
+#covers-item {
+    width: 50%;
+    margin: auto;
+    display: block;
+}
+
+#player-buttons {
+    display: flex;
+    position: relative;
+    height: 10%;
+    margin-top: 3%;
+    align-items:center;
+    justify-content: center;
+}
+
+.media-buttons {
+    display: block;
+    border-radius: 50%;
+    margin: auto;
+    height: 60px;
+    width: 60px;
+    background-size: cover;
+}
+
+.play {
+    background-color: darkgreen;
+    background-image: url("../images/player/play.png");
+}
+
+.pause {
+    background-color: darkgreen;
+    background-image: url("../images/player/pause.png");
+}
+
+.play:hover, .pause:hover {
+    background-color: green;
+}
+
+.play:active, .pause:active {
+    background-color: orangered;
+}
+
+#next {
+    background-color: crimson;
+    background-image: url("../images/player/next.png");
+}
+
+#prev {
+    background-color: crimson;
+    background-image: url("../images/player/prev.png");
+}
+
+#next:hover, #prev:hover {
+    background-color: black;
+}
+
+#names {
+    margin-top: 3%;
+    height: auto;
+    text-align: center;
+}
+
+#rectangle {
+    padding: 7px;
+    display: inline-block;
+    border: 4px solid orangered;
+    border-radius: 30px;
+    height: auto;
+    text-align: center;
+}
+
+#time-block {
+    display: flex;
+    gap: 5px;
+    margin-top: 3%;
+    height: 2%;
+    width: 100%;
+    justify-content: center;
+}
+
+#time-block p {
+    color: white;
+}
+
+#time {
+    position: relative;
+    border-radius: 20px;
+    height: 100%;
+    width: 300px;
+    background-color: #009d99;
+}
+
+#time:hover {
+    cursor: pointer;
+}
+
+.progress-time {
+    border-radius: 20px;
+    height: 100%;
+    width: 0;
+    background-color: yellow;
+    pointer-events: none;
+}
+
+#current-bar {
+    position: absolute;
+    background-color: yellow;
+}
+
+#names p {
+    color: white;
+    font-family: "Calibri Light", serif;
+}
+
+#author {
+    font-size: 25px;
+}
+
+#song-name {
+    font-size: 30px;
+}
+
+#hover-bar {
+    position: absolute;
+    height: 100%;
+    background-color: rgba(207, 7, 241, 0.5);
+    z-index: 0;
+}
+
+#context-selection {
+    display: none;
+    width: 100%;
+    height: 37%;
+    padding-top: 10%;
+    padding-left: 5%;
+}
+
+#context-selection .left, #context-selection .right {
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+#context-selection h3 {
+    color: white;
+}
+
+.ctx-select {
+    display: flex;
+    gap: 3%;
+}
+
+.ctx-select-button {
+    height: 30px;
+    width: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    margin-bottom: 10%;
+}
+
+.ctx-sb-clicked {
+    background-color: yellow;
+}

@@ -1,35 +1,85 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/audioContext.css" />
+    <link rel="stylesheet" href="css/player.css" />
     <title>Audio Visualizer</title>
 </head>
 <body>
-<audio id="audio">
-    <source src="audio/front-line-assembly-victim.mp3"/>
-</audio>
+<canvas></canvas>
+<audio id="audio" src="audio/front-line-assembly-victim.mp3"></audio>
 <div id="dynamics">
     <div class="dynamics-item" id="dynamics1">
-        <img class="subs-item" id="sub1" src="images/sub.png">
+        <img class="subs-item" id="sub1" src="images/project/sub.png">
     </div>
     <div class="dynamics-item" id="dynamics2">
-        <img class="subs-item" id="sub2" src="images/sub.png">
+        <img class="subs-item" id="sub2" src="images/project/sub.png">
     </div>
 </div>
 <div id="media">
-<!--    <div class="analyzer-item" id="analyzer1">-->
-<!--        <img src="images/screen.jpeg" class="compressor">-->
-<!--    </div>-->
-<!--    <div class="analyzer-item" id="analyzer2">-->
-<!--        <img src="images/screen.jpeg" class="compressor">-->
-<!--    </div>-->
-    <canvas class="canvas" id="canvas1"></canvas>
-    <canvas class="canvas" id="canvas2"></canvas>
+    <div class="analyzer-item" id="analyzer1">
+        <img src="images/project/screen.jpeg" class="tv">
+    </div>
+    <div class="analyzer-item" id="analyzer2">
+        <img src="images/project/screen.jpeg" class="tv">
+    </div>
 </div>
-<div id="device">
+<div id="player">
+    <div id="covers">
+        <img src="images/covers/front-line-assembly-victim.jpg" id="covers-item" class="no-drag"/>
+    </div>
+    <div id="names">
+        <div id="rectangle">
+            <p id="song-name">Victim</p>
+            <p id="author">Front Line Assembly</p>
+        </div>
+    </div>
 
+    <div id="time-block">
+        <p id="current-time">0:00</p>
+        <div id="time">
+            <div id="hover-bar" class="progress-time"></div>
+            <div id="current-bar" class="progress-time"></div>
+        </div>
+        <p id="duration">4:16</p>
+    </div>
+    <div id="player-buttons">
+        <button id="prev" class="media-buttons"></button>
+        <button id="play-pause" class="media-buttons play"></button>
+        <button id="next" class="media-buttons"></button>
+    </div>
+    <div id="context-selection">
+        <div class="left">
+            <div class="ctx-select">
+                <button id="OL" class="ctx-select-button ctx-sb-clicked"></button>
+                <h3>Осциллограф (L)</h3>
+            </div>
+            <div class="ctx-select">
+                <button id="CL" class="ctx-select-button"></button>
+                <h3>Компрессор (L)</h3>
+            </div>
+            <div class="ctx-select">
+                <button id="GL" class="ctx-select-button"></button>
+                <h3>Газ (L)</h3>
+            </div>
+        </div>
+        <div class="right">
+            <div class="ctx-select">
+                <button id="OR" class="ctx-select-button ctx-sb-clicked"></button>
+                <h3>Осциллограф (R)</h3>
+            </div>
+            <div class="ctx-select">
+                <button id="CR" class="ctx-select-button"></button>
+                <h3>Компрессор (R)</h3>
+            </div>
+            <div class="ctx-select">
+                <button id="GR" class="ctx-select-button"></button>
+                <h3>Газ (R)</h3>
+            </div>
+        </div>
+    </div>
 </div>
-<button id="button" style="position: absolute">Start</button>
 <script src="js/dynamic-audio.js"></script>
+<script src="js/player.js"></script>
 </body>
 </html>
