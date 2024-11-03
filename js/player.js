@@ -40,7 +40,7 @@ const play = () => {
 }
 
 const prev = () => {
-    if (audio.currentTime < 4) {
+    if (audio.currentTime < 3) {
         songPos = songPos === 0 ? songList.length - 1 : songPos - 1
         const song = songList[songPos]
         document.getElementById("song-name").innerText = song.name
@@ -100,11 +100,12 @@ const start = () => {
     dynAudio2 = new DynamicAudio(audio, audioCtx, audioSource)
     dynAudio3 = new DynamicAudio(audio, audioCtx, audioSource)
 
-    dynAudio2.setPosition("left")
-    dynAudio3.setPosition("right")
+    dynAudio2.setCanvas(document.getElementById("left-canvas"))
+    dynAudio3.setCanvas(document.getElementById("right-canvas"))
 
-    dynAudio2.waveform()
-    dynAudio3.waveform()
+    dynAudio1.subMove()
+    dynAudio2.oscillograph()
+    dynAudio3.oscillograph()
     document.getElementById('context-selection').style.display = "flex"
 }
 
@@ -124,8 +125,6 @@ document.querySelector('.play').addEventListener('click', () => {
         playButton.classList.add('play')
         audio.pause()
     }
-
-    dynAudio1.subMove()
 })
 
 document.querySelector('#next').addEventListener('click', next)
@@ -151,13 +150,21 @@ document.querySelectorAll('.ctx-select-button')
             const analyzer = type === 'oscillograph' ? 'screen' : 'compressor'
             const media = document.getElementById(`${tv}`)
 
-            if (media.style.display === 'none')
+            if (media.style.display === 'none') {
+                const list = document.getElementById(`${side}-canvas`).classList
+                list.remove(`canvas-gas-${side}`)
+                list.add(`canvas-screen-${side}`)
                 media.style.display = "flex"
+            }
             media.innerHTML = `<img src="images/project/${analyzer}.jpeg" class="tv">`
-            type === 'oscillograph' ? ctx.waveform() : ctx.compressor(13)
+            type === 'oscillograph' ? ctx.oscillograph() : ctx.compressor(13)
         }
 
         const gasOn = (side) => {
+            const list = document.getElementById(`${side}-canvas`).classList
+            list.remove(`canvas-screen-${side}`)
+            list.add(`canvas-gas-${side}`)
+
             const ctx = side === 'left' ? dynAudio2 : dynAudio3
             const tv = side === 'left' ? '#analyzer1' : '#analyzer2'
             document.querySelector(`${tv}`).style.display = "none"

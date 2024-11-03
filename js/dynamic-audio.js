@@ -12,33 +12,24 @@ class DynamicAudio {
     animation
 
     constructor(audio, audioCtx, audioSource) {
-        const canvas = document.querySelector('canvas')
-        this.canvas = canvas
-        this.canvas.width = window.innerWidth
-        this.canvas.height = window.innerHeight
-        this.ctx = canvas.getContext("2d")
         DynamicAudio.audio = audio
         this.analyser = audioCtx.createAnalyser()
         audioSource.connect(this.analyser)
         this.analyser.connect(audioCtx.destination)
     }
 
-    setPosition(position) {
-        this.position = position
-        this.borders = position === 'left' ? {
-            x: 0,
-            x1: this.canvas.width / 2
-        } : {
-            x: this.canvas.width / 2,
-            x1: this.canvas.width
-        }
+    setCanvas(canvas) {
+        this.canvas = canvas
+        this.canvas.width = window.innerWidth
+        this.canvas.height = window.innerHeight
+        this.ctx = canvas.getContext("2d")
     }
 
     setup(fftSize) {
         this.analyser.fftSize = fftSize;
         this.bufferLength = this.analyser.frequencyBinCount;
         this.dataArray = new Uint8Array(this.bufferLength);
-        this.barWidth = this.canvas.width / (this.bufferLength * 2);
+        this.barWidth = this.canvas?.width / (this.bufferLength * 2);
     }
 
     canvas_setup(lineWidth, strokeStyle, shadowColor, shadowBlur) {
@@ -55,21 +46,21 @@ class DynamicAudio {
         const animate = () => {
             dynAudio.analyser.getByteFrequencyData(this.dataArray);
             if (this.dataArray[0] > 230) {
-                const diff = 10 / time
+                const diff = 2 / time
                 const subs = document.querySelectorAll('.subs-item')
                 for (let i = 0; i < time; i++) {
                     setTimeout(() => {
                         subs.forEach(e => {
-                            e.style.width = `${48 + diff * i}px`
-                            e.style.height = `${48 + diff * i}px`
+                            e.style.width = `${28 + diff * i}%`
+                            e.style.height = `${14.5 + diff * i}%`
                         })
                     }, i)
                 }
                 for (let i = 0; i < time; i++) {
                     setTimeout(() => {
                         subs.forEach(e => {
-                            e.style.width = `${58 - diff * i}px`
-                            e.style.height = `${58 - diff * i}px`
+                            e.style.width = `${30 - diff * i}%`
+                            e.style.height = `${16.5 - diff * i}%`
                         })
                     }, 2 * time + i)
                 }
@@ -84,14 +75,14 @@ class DynamicAudio {
     }
 
     drawFlame = (x, h) => {
-        let height = 400 / 255 * h
+        let height = this.canvas.height / 255 * h
         const gradient = this.ctx.createRadialGradient(x,900, height, x,950,height / 5);
         gradient.addColorStop(0, "rgba(0, 0, 255, 0.8)");
         gradient.addColorStop(0.7, "white");
 
         this.ctx.beginPath();
         this.canvas_setup("1", "white", 'yellow', 10)
-        this.ctx.ellipse(x, this.canvas.height - height, 10, height, 0, 0, 2 * Math.PI);
+        this.ctx.ellipse(x, this.canvas.height - height, 24, height, 0, 0, 2 * Math.PI);
         this.ctx.fillStyle = gradient;
         this.ctx.fill();
     }
@@ -100,23 +91,24 @@ class DynamicAudio {
         this.ctx.fillStyle = "white"
         this.setup(64)
         const animate = () => {
-            let x = this.position === 'left' ? 10 : 770
+            let x = this.canvas.id === 'left-canvas' ? 15 : this.canvas.width - 15
+            const x1 = this.canvas.width / 28
             this.clearCanvas()
             this.analyser.getByteFrequencyData(this.dataArray)
             for (let i = 0; i < this.bufferLength; i++) {
-                let data = this.position === 'left' ? this.dataArray[i] : this.dataArray[this.bufferLength - i - 1]
-                this.drawFlame(x, data / 1.8)
-                x += this.barWidth;
+                let data = this.dataArray[i]
+                this.drawFlame(x, data / 2)
+                this.canvas.id === 'left-canvas' ? x += x1 : x -= x1;
             }
             this.animation = requestAnimationFrame(animate);
         }
         animate()
     }
 
-    waveform() {
-        const x1 = 413
-        let [x0, y0] = this.position === "left" ? [70, 573] : [1050, 573]
-        this.setup(1024)
+    oscillograph() {
+        const x1 = this.canvas.width
+        let x0 = 0, y0 = this.canvas.height / 2
+        this.setup(256)
         const ctx = this.ctx
 
         const animate = () => {
@@ -124,11 +116,11 @@ class DynamicAudio {
             this.analyser.getByteTimeDomainData(this.dataArray)
 
             ctx.beginPath()
-            this.canvas_setup("1", "white", null, 0)
+            this.canvas_setup("5", "white", null, 0)
             const sliceWidth = x1 / this.bufferLength;
             let x = x0
             for (let i = 0; i < this.bufferLength; i++) {
-                let y = 2 * this.dataArray[i] + 317
+                let y = 0.03204 * Math.pow(this.dataArray[i], 2) - 1.4454 * this.dataArray[i] + 78
                 if (i === 0)
                     ctx.moveTo(x, y0)
                 else
@@ -146,7 +138,7 @@ class DynamicAudio {
     rotateLine(angle, x0, x1, y1) {
         this.clearCanvas()
         this.ctx.beginPath()
-        this.canvas_setup("5", "lime", null, 0)
+        this.canvas_setup("12", "lime", null, 0)
         this.ctx.moveTo(x1, y1)
         this.ctx.lineTo(x1 - x0 * Math.cos(angle * Math.PI / 180),
             y1 - x0 * Math.sin(angle * Math.PI / 180))
@@ -154,10 +146,10 @@ class DynamicAudio {
     }
 
     compressor(sensitivity) {
-        let [x1, y1] = this.position === "left" ? [280, 687] : [1258, 687]
+        let x1 = this.canvas.width / 2, y1 = this.canvas.height
         this.setup(128)
-        const nullAngle = 33
-        const [x0, delay] = [155, 5]
+        const nullAngle = 34
+        const x0 = 600, delay = 5
         const animate = () => {
             this.analyser.getByteFrequencyData(this.dataArray)
             let calc_angle = (this.dataArray[31] - 110) * (110 * sensitivity) / 750 + nullAngle
@@ -187,6 +179,6 @@ class DynamicAudio {
     }
 
     clearCanvas() {
-        this.ctx.clearRect(this.borders.x, 0, this.borders.x1, this.canvas.height)
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     }
 }
